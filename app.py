@@ -1,7 +1,6 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
-from datetime import datetime, timedelta
 import plotly.express as px
 import streamlit.components.v1 as components
 
@@ -29,6 +28,7 @@ def para_formatla(deger):
 
 # --- PORTFÖY VERİLERİ ---
 portfoy = [
+    # Eski Pozisyonlar
     {"hisse": "AKYHO.IS", "maliyet": 3.03, "lot": 1724, "tarih": "17.02.2026"},
     {"hisse": "DGNMO.IS", "maliyet": 5.34, "lot": 928, "tarih": "17.02.2026"},
     {"hisse": "SRVGY.IS", "maliyet": 3.69, "lot": 1374, "tarih": "17.02.2026"},
@@ -37,7 +37,17 @@ portfoy = [
     {"hisse": "ARENA.IS", "maliyet": 29.36, "lot": 172, "tarih": "17.02.2026"},
     {"hisse": "PENTA.IS", "maliyet": 15.25, "lot": 165, "tarih": "17.02.2026"},
     {"hisse": "RAYSG.IS", "maliyet": 234.30, "lot": 22, "tarih": "17.02.2026"},
-    {"hisse": "BUCIM.IS", "maliyet": 7.19, "lot": 696, "tarih": "17.02.2026"}
+    {"hisse": "BUCIM.IS", "maliyet": 7.19, "lot": 696, "tarih": "17.02.2026"},
+    
+    # Yeni Eklenenler (DİKKAT: Lot sayıları geçici olarak 1 girildi, düzeltmeyi unutma)
+    {"hisse": "KARTN.IS", "maliyet": 85.50, "lot": 59, "tarih": "18.02.2026"},
+    {"hisse": "EBEBK.IS", "maliyet": 64.75, "lot": 78, "tarih": "18.02.2026"},
+    {"hisse": "AGROT.IS", "maliyet": 3.43, "lot": 1471, "tarih": "18.02.2026"},
+    {"hisse": "LILAK.IS", "maliyet": 34.72, "lot": 145, "tarih": "18.02.2026"},
+    {"hisse": "MAKIM.IS", "maliyet": 17.32, "lot": 289, "tarih": "18.02.2026"},
+    {"hisse": "LYDHO.IS", "maliyet": 197.50, "lot": 26, "tarih": "18.02.2026"},
+    {"hisse": "SANFM.IS", "maliyet": 7.60, "lot": 658, "tarih": "18.02.2026"},
+    {"hisse": "BEGYO.IS", "maliyet": 5.06, "lot": 991, "tarih": "18.02.2026"}
 ]
 
 kapatilan_portfoy = [
@@ -54,12 +64,10 @@ def get_current_price(symbol, maliyet):
 def ana_uygulama():
     zaman = pd.Timestamp.now('Europe/Istanbul').strftime('%d.%m.%Y %H:%M')
 
-    # Başlık ve Ziyaretçi Sayacını yan yana koymak için kolonlara ayırıyoruz
     c_baslik, c_sayac = st.columns([4, 1])
     with c_baslik:
         st.markdown(f"<h1>>_ BIST_TEST_TERMINAL | {zaman}</h1>", unsafe_allow_html=True)
     with c_sayac:
-        # Daha stabil altyapıya sahip yeni siber sayaç
         st.markdown('''
             <div style="text-align: right; padding-top: 15px;">
                 <img src="https://api.visitorbadge.io/api/visitors?path=ilke-k-bist.streamlit.app&label=TRAFIK&labelColor=%23111111&countColor=%2300ff41&style=flat" alt="Trafik Sayacı" />
@@ -86,6 +94,7 @@ def ana_uygulama():
         if yuzde < en_kotu_oran: en_kotu_oran, en_kotu_hisse = yuzde, h_adi
 
         satirlar_acik.append({
+            "Tarih": v.get("tarih", "-"),
             "Hisse": h_adi, "Maliyet": v["maliyet"], "Lot": v["lot"],
             "Fiyat": round(son_f, 2), "K/Z (%)": round(yuzde, 2), "Net K/Z": round(net, 2),
             "Büyüklük": round(buyukluk, 2)
@@ -110,7 +119,7 @@ def ana_uygulama():
     t_net_kapali = t_satis_kapali - t_maliyet_kapali
     t_yuzde_kapali = (t_net_kapali / t_maliyet_kapali) * 100 if t_maliyet_kapali > 0 else 0
 
-    # --- ÖZET METRİKLER (GÜNCELLENDİ) ---
+    # --- ÖZET METRİKLER ---
     c1, c2, c3, c4, c5 = st.columns(5)
     c1.metric("AKTİF PORTFÖY DEĞERİ", para_formatla(t_guncel_aktif))
     c2.metric("AKTİF K/Z (Unrealized)", para_formatla(t_net_aktif), f"{t_yuzde_aktif:.2f}%")
@@ -123,7 +132,7 @@ def ana_uygulama():
     # --- AKTİF TABLO VE TOPLAM ---
     st.markdown("### [ AKTİF_POZİSYONLAR ]")
     df_acik = pd.DataFrame(satirlar_acik)
-    toplam_row_acik = pd.DataFrame([{"Hisse": "TOPLAM", "Maliyet": 0, "Lot": 0, "Fiyat": 0, "K/Z (%)": t_yuzde_aktif, "Net K/Z": t_net_aktif, "Büyüklük": t_guncel_aktif}])
+    toplam_row_acik = pd.DataFrame([{"Tarih": "-", "Hisse": "TOPLAM", "Maliyet": 0, "Lot": 0, "Fiyat": 0, "K/Z (%)": t_yuzde_aktif, "Net K/Z": t_net_aktif, "Büyüklük": t_guncel_aktif}])
     df_acik_final = pd.concat([df_acik, toplam_row_acik], ignore_index=True)
 
     st.dataframe(
