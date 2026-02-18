@@ -52,8 +52,7 @@ def get_current_price(symbol, maliyet):
     except: return maliyet
 
 def ana_uygulama():
-    tr_saati = datetime.now() + timedelta(hours=3)
-    zaman = tr_saati.strftime('%d.%m.%Y %H:%M')
+    zaman = pd.Timestamp.now('Europe/Istanbul').strftime('%d.%m.%Y %H:%M')
     st.markdown(f"<h1>>_ BIST_TEST_TERMINAL | {zaman}</h1>", unsafe_allow_html=True)
 
     # --- 1. AKTİF POZİSYON HESAPLAMALARI ---
@@ -157,5 +156,3 @@ def ana_uygulama():
 
 if __name__ == "__main__":
     ana_uygulama()
-    ana_uygulama()
-
