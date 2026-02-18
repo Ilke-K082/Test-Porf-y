@@ -59,10 +59,10 @@ def ana_uygulama():
     with c_baslik:
         st.markdown(f"<h1>>_ BIST_TEST_TERMINAL | {zaman}</h1>", unsafe_allow_html=True)
     with c_sayac:
-        # Sunucu sıfırlansa bile silinmeyen, terminal temalı harici sayaç
+        # Daha stabil altyapıya sahip yeni siber sayaç
         st.markdown('''
             <div style="text-align: right; padding-top: 15px;">
-                <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Filke-k-bist.streamlit.app&count_bg=%2300FF41&title_bg=%23111111&title=TRAFİK&edge_flat=true"/>
+                <img src="https://api.visitorbadge.io/api/visitors?path=ilke-k-bist.streamlit.app&label=TRAFIK&labelColor=%23111111&countColor=%2300ff41&style=flat" alt="Trafik Sayacı" />
             </div>
         ''', unsafe_allow_html=True)
 
