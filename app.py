@@ -53,7 +53,18 @@ def get_current_price(symbol, maliyet):
 
 def ana_uygulama():
     zaman = pd.Timestamp.now('Europe/Istanbul').strftime('%d.%m.%Y %H:%M')
-    st.markdown(f"<h1>>_ BIST_TEST_TERMINAL | {zaman}</h1>", unsafe_allow_html=True)
+
+    # Başlık ve Ziyaretçi Sayacını yan yana koymak için kolonlara ayırıyoruz
+    c_baslik, c_sayac = st.columns([4, 1])
+    with c_baslik:
+        st.markdown(f"<h1>>_ BIST_TEST_TERMINAL | {zaman}</h1>", unsafe_allow_html=True)
+    with c_sayac:
+        # Sunucu sıfırlansa bile silinmeyen, terminal temalı harici sayaç
+        st.markdown('''
+            <div style="text-align: right; padding-top: 15px;">
+                <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Filke-k-bist.streamlit.app&count_bg=%2300FF41&title_bg=%23111111&title=TRAFİK&edge_flat=true"/>
+            </div>
+        ''', unsafe_allow_html=True)
 
     # --- 1. AKTİF POZİSYON HESAPLAMALARI ---
     satirlar_acik = []
