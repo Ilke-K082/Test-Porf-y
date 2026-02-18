@@ -1,7 +1,7 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 import plotly.express as px
 import streamlit.components.v1 as components
 
@@ -52,8 +52,10 @@ def get_current_price(symbol, maliyet):
     except: return maliyet
 
 def ana_uygulama():
-    zaman = datetime.now().strftime('%d.%m.%Y %H:%M')
-    st.markdown(f"<h1>>_ BIST_TERMINAL | {zaman}</h1>", unsafe_allow_html=True)
+    # Sunucu saatine 3 saat ekleyip Türkiye saatini buluyoruz
+    tr_saati = datetime.now() + timedelta(hours=3)
+    zaman = tr_saati.strftime('%d.%m.%Y %H:%M')
+    st.markdown(f"<h1>>_ BIST_TEST_PORTFY_TERMINAL | {zaman}</h1>", unsafe_allow_html=True)
 
     # --- HESAPLAMALAR ---
     satirlar_acik = []
