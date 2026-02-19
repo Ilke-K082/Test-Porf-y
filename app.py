@@ -28,25 +28,27 @@ def para_formatla(deger):
 
 # --- PORTFÖY VERİLERİ ---
 portfoy = [
-    # Eski Pozisyonlar
-    {"hisse": "AKYHO.IS", "maliyet": 3.03, "lot": 1724, "tarih": "17.02.2026"},
-    {"hisse": "DGNMO.IS", "maliyet": 5.34, "lot": 928, "tarih": "17.02.2026"},
-    {"hisse": "SRVGY.IS", "maliyet": 3.69, "lot": 1374, "tarih": "17.02.2026"},
-    {"hisse": "KLMSN.IS", "maliyet": 32.92, "lot": 154, "tarih": "17.02.2026"},
+    # 17.02.2026 İşlemleri
     {"hisse": "EKOS.IS", "maliyet": 6.09, "lot": 834, "tarih": "17.02.2026"},
-    {"hisse": "ARENA.IS", "maliyet": 29.36, "lot": 172, "tarih": "17.02.2026"},
-    {"hisse": "RAYSG.IS", "maliyet": 234.30, "lot": 22, "tarih": "17.02.2026"},
-    {"hisse": "BUCIM.IS", "maliyet": 7.19, "lot": 696, "tarih": "17.02.2026"},
-    
-    # Yeni Eklenenler (DİKKAT: Lot sayıları geçici olarak 1 girildi, düzeltmeyi unutma)
-    {"hisse": "KARTN.IS", "maliyet": 85.50, "lot": 59, "tarih": "18.02.2026"},
-    {"hisse": "EBEBK.IS", "maliyet": 64.75, "lot": 78, "tarih": "18.02.2026"},
-    {"hisse": "AGROT.IS", "maliyet": 3.43, "lot": 1471, "tarih": "18.02.2026"},
-    {"hisse": "LILAK.IS", "maliyet": 34.72, "lot": 145, "tarih": "18.02.2026"},
-    {"hisse": "MAKIM.IS", "maliyet": 17.32, "lot": 289, "tarih": "18.02.2026"},
-    {"hisse": "LYDHO.IS", "maliyet": 197.50, "lot": 26, "tarih": "18.02.2026"},
-    {"hisse": "SANFM.IS", "maliyet": 7.60, "lot": 658, "tarih": "18.02.2026"},
-    {"hisse": "BEGYO.IS", "maliyet": 5.06, "lot": 991, "tarih": "18.02.2026"},
+
+    # 18.02.2026 İşlemleri (Ağırlıklı Ortalama Maliyet ile Güncellenmiş)
+    {"hisse": "AGROT.IS", "maliyet": 3.29, "lot": 3052, "tarih": "18.02.2026"},
+    {"hisse": "AKYHO.IS", "maliyet": 2.98, "lot": 2596, "tarih": "18.02.2026"},
+    {"hisse": "ARENA.IS", "maliyet": 28.85, "lot": 262, "tarih": "18.02.2026"},
+    {"hisse": "BEGYO.IS", "maliyet": 5.13, "lot": 1982, "tarih": "18.02.2026"},
+    {"hisse": "BUCIM.IS", "maliyet": 7.07, "lot": 1062, "tarih": "18.02.2026"},
+    {"hisse": "DGNMO.IS", "maliyet": 5.25, "lot": 1422, "tarih": "18.02.2026"},
+    {"hisse": "EBEBK.IS", "maliyet": 63.63, "lot": 119, "tarih": "18.02.2026"},
+    {"hisse": "KARTN.IS", "maliyet": 84.02, "lot": 90, "tarih": "18.02.2026"},
+    {"hisse": "KLMSN.IS", "maliyet": 32.35, "lot": 234, "tarih": "18.02.2026"},
+    {"hisse": "LILAK.IS", "maliyet": 34.12, "lot": 221, "tarih": "18.02.2026"},
+    {"hisse": "LYDHO.IS", "maliyet": 194.04, "lot": 40, "tarih": "18.02.2026"},
+    {"hisse": "MAKIM.IS", "maliyet": 17.02, "lot": 441, "tarih": "18.02.2026"},
+    {"hisse": "RAYSG.IS", "maliyet": 230.14, "lot": 34, "tarih": "18.02.2026"},
+    {"hisse": "SANFM.IS", "maliyet": 7.47, "lot": 1005, "tarih": "18.02.2026"},
+    {"hisse": "SRVGY.IS", "maliyet": 3.62, "lot": 2089, "tarih": "18.02.2026"},
+
+    # 19.02.2026 İşlemleri
     {"hisse": "AVTUR.IS", "maliyet": 18.97, "lot": 264, "tarih": "19.02.2026"}
 ]
 
