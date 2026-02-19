@@ -35,7 +35,6 @@ portfoy = [
     {"hisse": "KLMSN.IS", "maliyet": 32.92, "lot": 154, "tarih": "17.02.2026"},
     {"hisse": "EKOS.IS", "maliyet": 6.09, "lot": 834, "tarih": "17.02.2026"},
     {"hisse": "ARENA.IS", "maliyet": 29.36, "lot": 172, "tarih": "17.02.2026"},
-    {"hisse": "PENTA.IS", "maliyet": 15.25, "lot": 165, "tarih": "17.02.2026"},
     {"hisse": "RAYSG.IS", "maliyet": 234.30, "lot": 22, "tarih": "17.02.2026"},
     {"hisse": "BUCIM.IS", "maliyet": 7.19, "lot": 696, "tarih": "17.02.2026"},
     
@@ -47,11 +46,13 @@ portfoy = [
     {"hisse": "MAKIM.IS", "maliyet": 17.32, "lot": 289, "tarih": "18.02.2026"},
     {"hisse": "LYDHO.IS", "maliyet": 197.50, "lot": 26, "tarih": "18.02.2026"},
     {"hisse": "SANFM.IS", "maliyet": 7.60, "lot": 658, "tarih": "18.02.2026"},
-    {"hisse": "BEGYO.IS", "maliyet": 5.06, "lot": 991, "tarih": "18.02.2026"}
+    {"hisse": "BEGYO.IS", "maliyet": 5.06, "lot": 991, "tarih": "18.02.2026"},
+    {"hisse": "AVTUR.IS", "maliyet": 18.97, "lot": 264, "tarih": "19.02.2026"}
 ]
 
 kapatilan_portfoy = [
-    {"hisse": "PENTA.IS", "maliyet": 15.25, "satis": 16.68, "lot": 166, "tarih": "18.02.2026"}
+    {"hisse": "PENTA.IS", "maliyet": 15.25, "satis": 16.68, "lot": 166, "tarih": "18.02.2026"},
+    {"hisse": "PENTA.IS", "maliyet": 15.25, "satis": 15.64, "lot": 165, "tarih": "19.02.2026"}
 ]
 
 @st.cache_data(ttl=300)
