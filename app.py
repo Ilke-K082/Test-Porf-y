@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 import plotly.express as px
 import streamlit.components.v1 as components
+import yfinance as yf
 
 # --- SAYFA YAPILANDIRMASI ---
 st.set_page_config(page_title="BIST_TERMINAL", layout="wide", initial_sidebar_state="collapsed")
@@ -31,7 +32,7 @@ portfoy = [
     # 17.02.2026 İşlemleri
     {"hisse": "EKOS.IS", "maliyet": 6.09, "lot": 834, "tarih": "17.02.2026"},
 
-    # 18.02.2026 İşlemleri (Ağırlıklı Ortalama Maliyet ile Güncellenmiş)
+    # 18.02.2026 İşlemleri
     {"hisse": "AGROT.IS", "maliyet": 3.29, "lot": 3052, "tarih": "18.02.2026"},
     {"hisse": "AKYHO.IS", "maliyet": 2.98, "lot": 2596, "tarih": "18.02.2026"},
     {"hisse": "ARENA.IS", "maliyet": 28.85, "lot": 262, "tarih": "18.02.2026"},
@@ -63,27 +64,37 @@ kapatilan_portfoy = [
 
 @st.cache_data(ttl=300)
 def get_current_price(symbol, maliyet):
-    # İş Yatırım API için .IS uzantısını temizliyoruz
     hisse_kodu = symbol.replace(".IS", "")
-    url = f"https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/HisseTekil?hisse={hisse_kodu}"
     
+    # 1. PLAN: Yerel Kaynak (İş Yatırım) - Bot korumasına karşı daha sağlam kimlik
     try:
+        url = f"https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/HisseTekil?hisse={hisse_kodu}"
         kimlik = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+            'Accept': 'application/json, text/javascript, */*; q=0.01',
+            'X-Requested-With': 'XMLHttpRequest'
         }
         istek = requests.get(url, headers=kimlik, timeout=5)
-        icerik = istek.json()
         
-        if icerik.get("value") and len(icerik["value"]) > 0:
-            anlik_deger = icerik["value"][0].get("Son")
-            if anlik_deger is not None:
-                # Olası virgüllü sayı formatını noktalıya çevirip float yapıyoruz
-                return float(str(anlik_deger).replace(",", "."))
-                
-        # Fiyat bulunamazsa 0.0 dönüyoruz, böylece hata tabloda göze batar
-        return 0.0
-    except: 
-        return 0.0
+        if istek.status_code == 200:
+            icerik = istek.json()
+            if icerik.get("value") and len(icerik["value"]) > 0:
+                anlik_deger = icerik["value"][0].get("Son")
+                if anlik_deger is not None:
+                    return float(str(anlik_deger).replace(",", "."))
+    except:
+        pass # İlk aşama başarısız olursa çökme, devam et.
+        
+    # 2. PLAN (YEDEK): Küresel Kaynak (Yahoo Finance) - Bulut İP kısıtlamasını aşmak için
+    try:
+        data = yf.Ticker(symbol).history(period="1d")
+        if not data.empty:
+            return float(data['Close'].iloc[-1])
+    except:
+        pass
+        
+    # Her iki kapı da duvar olursa sıfır bas
+    return 0.0
 
 def ana_uygulama():
     zaman = pd.Timestamp.now('Europe/Istanbul').strftime('%d.%m.%Y %H:%M')
@@ -106,7 +117,7 @@ def ana_uygulama():
 
     for v in portfoy:
         son_f = get_current_price(v["hisse"], v["maliyet"])
-        yuzde = ((son_f - v["maliyet"]) / v["maliyet"]) * 100
+        yuzde = ((son_f - v["maliyet"]) / v["maliyet"]) * 100 if v["maliyet"] > 0 else 0
         net = (son_f - v["maliyet"]) * v["lot"]
         buyukluk = son_f * v["lot"]
         
@@ -131,7 +142,7 @@ def ana_uygulama():
     satirlar_kapali = []
     t_maliyet_kapali, t_satis_kapali = 0, 0
     for v in kapatilan_portfoy:
-        y = ((v["satis"] - v["maliyet"]) / v["maliyet"]) * 100
+        y = ((v["satis"] - v["maliyet"]) / v["maliyet"]) * 100 if v["maliyet"] > 0 else 0
         n = (v["satis"] - v["maliyet"]) * v["lot"]
         t_maliyet_kapali += (v["maliyet"] * v["lot"])
         t_satis_kapali += (v["satis"] * v["lot"])
@@ -165,7 +176,7 @@ def ana_uygulama():
         }).map(lambda x: 'color: #00FF41; font-weight: bold' if isinstance(x, (int, float)) and x > 0 else ('color: #FF003C; font-weight: bold' if isinstance(x, (int, float)) and x < 0 else ''), 
                subset=['K/Z (%)', 'Net K/Z'])
           .map(lambda x: 'background-color: #1a1a1a; font-weight: bold; color: #ffffff' if x == "TOPLAM" else '', subset=['Hisse']),
-        use_container_width=True, hide_index=True
+        width='stretch', hide_index=True # BARKOD: use_container_width KALDIRILDI, YENİ FORMAT EKLENDİ
     )
 
     # --- GEÇMİŞ TABLO VE TOPLAM ---
@@ -181,7 +192,7 @@ def ana_uygulama():
             }).map(lambda x: 'color: #00a2ff; font-weight: bold' if isinstance(x, (int, float)) and x > 0 else ('color: #FF003C; font-weight: bold' if isinstance(x, (int, float)) and x < 0 else ''), 
                    subset=['K/Z (%)', 'Net K/Z'])
               .map(lambda x: 'background-color: #1a1a1a; font-weight: bold; color: #ffffff' if x == "TOPLAM" else '', subset=['Hisse']),
-            use_container_width=True, hide_index=True
+            width='stretch', hide_index=True # BARKOD: use_container_width KALDIRILDI, YENİ FORMAT EKLENDİ
         )
 
     st.markdown("---")
@@ -190,7 +201,7 @@ def ana_uygulama():
         fig = px.treemap(df_acik, path=[px.Constant("BIST Portföyü"), 'Hisse'], values='Büyüklük',
                          color='K/Z (%)', color_continuous_scale=['#FF003C', '#111111', '#00FF41'], color_continuous_midpoint=0)
         fig.update_layout(margin=dict(t=0, l=0, r=0, b=0), paper_bgcolor='#050505', plot_bgcolor='#050505', font=dict(color='#00FF41'))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch') # BARKOD: YENİ FORMAT EKLENDİ
     with tab2:
         tv_secim = st.selectbox("İncelenecek Hisseyi Seçin:", [h["Hisse"] for h in satirlar_acik])
         tv_sembol = f"BIST:{tv_secim}"
