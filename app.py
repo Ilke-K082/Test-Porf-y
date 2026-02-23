@@ -1,5 +1,5 @@
 import streamlit as st
-import yfinance as yf
+import requests
 import pandas as pd
 import plotly.express as px
 import streamlit.components.v1 as components
@@ -63,10 +63,27 @@ kapatilan_portfoy = [
 
 @st.cache_data(ttl=300)
 def get_current_price(symbol, maliyet):
+    # İş Yatırım API için .IS uzantısını temizliyoruz
+    hisse_kodu = symbol.replace(".IS", "")
+    url = f"https://www.isyatirim.com.tr/_layouts/15/IsYatirim.Website/Common/Data.aspx/HisseTekil?hisse={hisse_kodu}"
+    
     try:
-        data = yf.Ticker(symbol).history(period="1d")
-        return data['Close'].iloc[-1] if not data.empty else maliyet
-    except: return maliyet
+        kimlik = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
+        istek = requests.get(url, headers=kimlik, timeout=5)
+        icerik = istek.json()
+        
+        if icerik.get("value") and len(icerik["value"]) > 0:
+            anlik_deger = icerik["value"][0].get("Son")
+            if anlik_deger is not None:
+                # Olası virgüllü sayı formatını noktalıya çevirip float yapıyoruz
+                return float(str(anlik_deger).replace(",", "."))
+                
+        # Fiyat bulunamazsa 0.0 dönüyoruz, böylece hata tabloda göze batar
+        return 0.0
+    except: 
+        return 0.0
 
 def ana_uygulama():
     zaman = pd.Timestamp.now('Europe/Istanbul').strftime('%d.%m.%Y %H:%M')
@@ -183,5 +200,3 @@ def ana_uygulama():
 
 if __name__ == "__main__":
     ana_uygulama()
-
-
