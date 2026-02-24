@@ -55,7 +55,7 @@ portfoy = [
     {"hisse": "AVTUR.IS", "maliyet": 18.61, "lot": 404, "tarih": "20.02.2026"},
     
     # 23.02.2026 İşlemleri
-    {"hisse": "EFOR.IS", "maliyet": 23.55, "lot": 319, "tarih": "23.02.2026"},
+    {"hisse": "EFOR.IS", "maliyet": 22.95, "lot": 437, "tarih": "23.02.2026"},
     {"hisse": "DCTTR.IS", "maliyet": 8.70, "lot": 877, "tarih": "23.02.2026"},
     # 24.02.2026 İşlemleri
     {"hisse": "AKFGY.IS", "maliyet": 3.12, "lot": 1603, "tarih": "24.02.2026"},
@@ -217,5 +217,6 @@ def ana_uygulama():
 
 if __name__ == "__main__":
     ana_uygulama()
+
 
 
