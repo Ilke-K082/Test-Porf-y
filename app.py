@@ -29,14 +29,13 @@ def para_formatla(deger):
 
 # --- PORTFÖY VERİLERİ ---
 portfoy = [
-    # 17.02.2026 İşlemleri
+        # 17.02.2026 İşlemleri
     {"hisse": "EKOS.IS", "maliyet": 6.09, "lot": 834, "tarih": "17.02.2026"},
 
     # 18.02.2026 İşlemleri
     {"hisse": "AGROT.IS", "maliyet": 3.29, "lot": 3052, "tarih": "18.02.2026"},
     {"hisse": "AKYHO.IS", "maliyet": 2.98, "lot": 2596, "tarih": "18.02.2026"},
     {"hisse": "ARENA.IS", "maliyet": 28.85, "lot": 262, "tarih": "18.02.2026"},
-    {"hisse": "BEGYO.IS", "maliyet": 4.97, "lot": 1512, "tarih": "18.02.2026"},
     {"hisse": "BUCIM.IS", "maliyet": 7.07, "lot": 1062, "tarih": "18.02.2026"},
     {"hisse": "EBEBK.IS", "maliyet": 63.63, "lot": 119, "tarih": "18.02.2026"},
     {"hisse": "KARTN.IS", "maliyet": 84.02, "lot": 90, "tarih": "18.02.2026"},
@@ -49,14 +48,19 @@ portfoy = [
     {"hisse": "SRVGY.IS", "maliyet": 3.54, "lot": 2843, "tarih": "18.02.2026"},
 
     # 19.02.2026 İşlemleri
+    {"hisse": "BEGYO.IS", "maliyet": 4.86, "lot": 2062, "tarih": "19.02.2026"},
     {"hisse": "DGNMO.IS", "maliyet": 5.13, "lot": 1943, "tarih": "19.02.2026"},
 
     # 20.02.2026 İşlemleri
     {"hisse": "AVTUR.IS", "maliyet": 18.61, "lot": 404, "tarih": "20.02.2026"},
     
     # 23.02.2026 İşlemleri
-    {"hisse": "EFOR.IS", "maliyet": 23.96, "lot": 209, "tarih": "23.02.2026"},
-    {"hisse": "DCTTR.IS", "maliyet": 8.85, "lot": 579, "tarih": "23.02.2026"}
+    {"hisse": "EFOR.IS", "maliyet": 23.55, "lot": 319, "tarih": "23.02.2026"},
+    {"hisse": "DCTTR.IS", "maliyet": 8.70, "lot": 877, "tarih": "23.02.2026"},
+    # 24.02.2026 İşlemleri
+    {"hisse": "AKFGY.IS", "maliyet": 3.12, "lot": 1603, "tarih": "24.02.2026"},
+    {"hisse": "ERSU.IS", "maliyet": 19.38, "lot": 258, "tarih": "24.02.2026"},
+    {"hisse": "TEHOL.IS", "maliyet": 15.89, "lot": 323, "tarih": "24.02.2026"}
 ]
 
 kapatilan_portfoy = [
@@ -213,4 +217,5 @@ def ana_uygulama():
 
 if __name__ == "__main__":
     ana_uygulama()
+
 
