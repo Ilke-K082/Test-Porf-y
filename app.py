@@ -92,7 +92,7 @@ def get_current_price(symbol, maliyet):
                 if anlik_deger is not None:
                     return float(str(anlik_deger).replace(",", "."))
     except:
-        pass # İlk aşama başarısız olursa çökme, devam et.
+        pass 
         
     # 2. PLAN (YEDEK): Küresel Kaynak (Yahoo Finance) - Bulut İP kısıtlamasını aşmak için
     try:
@@ -147,21 +147,23 @@ def ana_uygulama():
     t_net_aktif = t_guncel_aktif - t_maliyet_aktif
     t_yuzde_aktif = (t_net_aktif / t_maliyet_aktif) * 100 if t_maliyet_aktif > 0 else 0
 
-    # --- GEÇMİŞ TABLO VE TOPLAM ---
-    if kapatilan_portfoy:
-        st.markdown('<br><h3 style="color: #00a2ff !important;">[ GEÇMİŞ_İŞLEMLER ]</h3>', unsafe_allow_html=True)
-        df_kapali = pd.DataFrame(satirlar_kapali)
-        toplam_row_kapali = pd.DataFrame([{"Alım Tarihi": "-", "Satış Tarihi": "-", "Hisse": "TOPLAM", "Maliyet": 0, "Satış": 0, "Lot": 0, "K/Z (%)": t_yuzde_kapali, "Net K/Z": t_net_kapali}])
-        df_kapali_final = pd.concat([df_kapali, toplam_row_kapali], ignore_index=True)
-
-        st.dataframe(
-            df_kapali_final.style.format({
-                "Maliyet": "{:.2f} TL", "Satış": "{:.2f} TL", "K/Z (%)": "% {:.2f}", "Net K/Z": "{:.2f} TL"
-            }).map(lambda x: 'color: #00a2ff; font-weight: bold' if isinstance(x, (int, float)) and x > 0 else ('color: #FF003C; font-weight: bold' if isinstance(x, (int, float)) and x < 0 else ''), 
-                   subset=['K/Z (%)', 'Net K/Z'])
-              .map(lambda x: 'background-color: #1a1a1a; font-weight: bold; color: #ffffff' if x == "TOPLAM" else '', subset=['Hisse']),
-            width='stretch', hide_index=True
-        )
+    # --- 2. GERÇEKLEŞMİŞ (KAPALI) HESAPLAMALARI ---
+    satirlar_kapali = []
+    t_maliyet_kapali, t_satis_kapali = 0, 0
+    for v in kapatilan_portfoy:
+        y = ((v["satis"] - v["maliyet"]) / v["maliyet"]) * 100 if v["maliyet"] > 0 else 0
+        n = (v["satis"] - v["maliyet"]) * v["lot"]
+        t_maliyet_kapali += (v["maliyet"] * v["lot"])
+        t_satis_kapali += (v["satis"] * v["lot"])
+        satirlar_kapali.append({
+            "Alım Tarihi": v.get("alim_tarihi", "-"),
+            "Satış Tarihi": v.get("tarih", "-"), 
+            "Hisse": v["hisse"].replace(".IS", ""),
+            "Maliyet": v["maliyet"], "Satış": v["satis"], "Lot": v["lot"],
+            "K/Z (%)": round(y, 2), "Net K/Z": round(n, 2)
+        })
+    t_net_kapali = t_satis_kapali - t_maliyet_kapali
+    t_yuzde_kapali = (t_net_kapali / t_maliyet_kapali) * 100 if t_maliyet_kapali > 0 else 0
 
     # --- ÖZET METRİKLER ---
     c1, c2, c3, c4, c5 = st.columns(5)
@@ -185,14 +187,14 @@ def ana_uygulama():
         }).map(lambda x: 'color: #00FF41; font-weight: bold' if isinstance(x, (int, float)) and x > 0 else ('color: #FF003C; font-weight: bold' if isinstance(x, (int, float)) and x < 0 else ''), 
                subset=['K/Z (%)', 'Net K/Z'])
           .map(lambda x: 'background-color: #1a1a1a; font-weight: bold; color: #ffffff' if x == "TOPLAM" else '', subset=['Hisse']),
-        width='stretch', hide_index=True # BARKOD: use_container_width KALDIRILDI, YENİ FORMAT EKLENDİ
+        width='stretch', hide_index=True
     )
 
     # --- GEÇMİŞ TABLO VE TOPLAM ---
     if kapatilan_portfoy:
         st.markdown('<br><h3 style="color: #00a2ff !important;">[ GEÇMİŞ_İŞLEMLER ]</h3>', unsafe_allow_html=True)
         df_kapali = pd.DataFrame(satirlar_kapali)
-        toplam_row_kapali = pd.DataFrame([{"Tarih": "-", "Hisse": "TOPLAM", "Maliyet": 0, "Satış": 0, "Lot": 0, "K/Z (%)": t_yuzde_kapali, "Net K/Z": t_net_kapali}])
+        toplam_row_kapali = pd.DataFrame([{"Alım Tarihi": "-", "Satış Tarihi": "-", "Hisse": "TOPLAM", "Maliyet": 0, "Satış": 0, "Lot": 0, "K/Z (%)": t_yuzde_kapali, "Net K/Z": t_net_kapali}])
         df_kapali_final = pd.concat([df_kapali, toplam_row_kapali], ignore_index=True)
 
         st.dataframe(
@@ -201,7 +203,7 @@ def ana_uygulama():
             }).map(lambda x: 'color: #00a2ff; font-weight: bold' if isinstance(x, (int, float)) and x > 0 else ('color: #FF003C; font-weight: bold' if isinstance(x, (int, float)) and x < 0 else ''), 
                    subset=['K/Z (%)', 'Net K/Z'])
               .map(lambda x: 'background-color: #1a1a1a; font-weight: bold; color: #ffffff' if x == "TOPLAM" else '', subset=['Hisse']),
-            width='stretch', hide_index=True # BARKOD: use_container_width KALDIRILDI, YENİ FORMAT EKLENDİ
+            width='stretch', hide_index=True
         )
 
     st.markdown("---")
@@ -210,7 +212,7 @@ def ana_uygulama():
         fig = px.treemap(df_acik, path=[px.Constant("BIST Portföyü"), 'Hisse'], values='Büyüklük',
                          color='K/Z (%)', color_continuous_scale=['#FF003C', '#111111', '#00FF41'], color_continuous_midpoint=0)
         fig.update_layout(margin=dict(t=0, l=0, r=0, b=0), paper_bgcolor='#050505', plot_bgcolor='#050505', font=dict(color='#00FF41'))
-        st.plotly_chart(fig, width='stretch') # BARKOD: YENİ FORMAT EKLENDİ
+        st.plotly_chart(fig, width='stretch')
     with tab2:
         tv_secim = st.selectbox("İncelenecek Hisseyi Seçin:", [h["Hisse"] for h in satirlar_acik])
         tv_sembol = f"BIST:{tv_secim}"
@@ -220,8 +222,4 @@ def ana_uygulama():
 
 if __name__ == "__main__":
     ana_uygulama()
-
-
-
-
 
