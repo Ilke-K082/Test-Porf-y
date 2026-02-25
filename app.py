@@ -29,43 +29,46 @@ def para_formatla(deger):
 
 # --- PORTFÖY VERİLERİ ---
 portfoy = [
-        # 17.02.2026 İşlemleri
-    {"hisse": "EKOS.IS", "maliyet": 6.09, "lot": 834, "tarih": "17.02.2026"},
-
     # 18.02.2026 İşlemleri
     {"hisse": "AGROT.IS", "maliyet": 3.29, "lot": 3052, "tarih": "18.02.2026"},
     {"hisse": "AKYHO.IS", "maliyet": 2.98, "lot": 2596, "tarih": "18.02.2026"},
-    {"hisse": "ARENA.IS", "maliyet": 28.85, "lot": 262, "tarih": "18.02.2026"},
     {"hisse": "BUCIM.IS", "maliyet": 7.07, "lot": 1062, "tarih": "18.02.2026"},
     {"hisse": "EBEBK.IS", "maliyet": 63.63, "lot": 119, "tarih": "18.02.2026"},
     {"hisse": "KARTN.IS", "maliyet": 84.02, "lot": 90, "tarih": "18.02.2026"},
     {"hisse": "KLMSN.IS", "maliyet": 32.35, "lot": 234, "tarih": "18.02.2026"},
     {"hisse": "LILAK.IS", "maliyet": 34.12, "lot": 221, "tarih": "18.02.2026"},
-    {"hisse": "LYDHO.IS", "maliyet": 194.04, "lot": 40, "tarih": "18.02.2026"},
-    {"hisse": "MAKIM.IS", "maliyet": 17.02, "lot": 441, "tarih": "18.02.2026"},
     {"hisse": "RAYSG.IS", "maliyet": 230.14, "lot": 34, "tarih": "18.02.2026"},
     {"hisse": "SANFM.IS", "maliyet": 7.47, "lot": 1005, "tarih": "18.02.2026"},
     {"hisse": "SRVGY.IS", "maliyet": 3.54, "lot": 2843, "tarih": "18.02.2026"},
 
     # 19.02.2026 İşlemleri
+    {"hisse": "ARENA.IS", "maliyet": 28.20, "lot": 357, "tarih": "19.02.2026"},
     {"hisse": "BEGYO.IS", "maliyet": 4.86, "lot": 2062, "tarih": "19.02.2026"},
     {"hisse": "DGNMO.IS", "maliyet": 5.13, "lot": 1943, "tarih": "19.02.2026"},
 
     # 20.02.2026 İşlemleri
     {"hisse": "AVTUR.IS", "maliyet": 18.61, "lot": 404, "tarih": "20.02.2026"},
+    {"hisse": "MAKIM.IS", "maliyet": 16.63, "lot": 602, "tarih": "20.02.2026"},
     
     # 23.02.2026 İşlemleri
     {"hisse": "EFOR.IS", "maliyet": 22.95, "lot": 437, "tarih": "23.02.2026"},
     {"hisse": "DCTTR.IS", "maliyet": 8.70, "lot": 877, "tarih": "23.02.2026"},
+
     # 24.02.2026 İşlemleri
     {"hisse": "AKFGY.IS", "maliyet": 3.12, "lot": 1603, "tarih": "24.02.2026"},
-    {"hisse": "ERSU.IS", "maliyet": 19.38, "lot": 258, "tarih": "24.02.2026"},
-    {"hisse": "TEHOL.IS", "maliyet": 15.89, "lot": 323, "tarih": "24.02.2026"}
+
+    # 25.02.2026 İşlemleri
+    {"hisse": "KRDMA.IS", "maliyet": 30.62, "lot": 165, "tarih": "25.02.2026"},
+    {"hisse": "IZENR.IS", "maliyet": 9.98, "lot": 1018, "tarih": "25.02.2026"}
 ]
 
 kapatilan_portfoy = [
-    {"hisse": "PENTA.IS", "maliyet": 15.25, "satis": 16.68, "lot": 166, "tarih": "18.02.2026"},
-    {"hisse": "PENTA.IS", "maliyet": 15.25, "satis": 15.64, "lot": 165, "tarih": "19.02.2026"}
+    {"hisse": "PENTA.IS", "alim_tarihi": "17.02.2026", "maliyet": 15.25, "satis": 16.68, "lot": 166, "tarih": "18.02.2026"},
+    {"hisse": "PENTA.IS", "alim_tarihi": "17.02.2026", "maliyet": 15.25, "satis": 15.64, "lot": 165, "tarih": "19.02.2026"},
+    {"hisse": "EKOS.IS", "alim_tarihi": "17.02.2026", "maliyet": 6.09, "satis": 6.56, "lot": 834, "tarih": "25.02.2026"},
+    {"hisse": "LYDHO.IS", "alim_tarihi": "18.02.2026", "maliyet": 194.04, "satis": 200.30, "lot": 40, "tarih": "25.02.2026"},
+    {"hisse": "ERSU.IS", "alim_tarihi": "24.02.2026", "maliyet": 19.38, "satis": 21.30, "lot": 258, "tarih": "25.02.2026"},
+    {"hisse": "TEHOL.IS", "alim_tarihi": "24.02.2026", "maliyet": 15.89, "satis": 16.05, "lot": 323, "tarih": "25.02.2026"}
 ]
 
 @st.cache_data(ttl=300)
@@ -144,21 +147,21 @@ def ana_uygulama():
     t_net_aktif = t_guncel_aktif - t_maliyet_aktif
     t_yuzde_aktif = (t_net_aktif / t_maliyet_aktif) * 100 if t_maliyet_aktif > 0 else 0
 
-    # --- 2. GERÇEKLEŞMİŞ (KAPALI) HESAPLAMALARI ---
-    satirlar_kapali = []
-    t_maliyet_kapali, t_satis_kapali = 0, 0
-    for v in kapatilan_portfoy:
-        y = ((v["satis"] - v["maliyet"]) / v["maliyet"]) * 100 if v["maliyet"] > 0 else 0
-        n = (v["satis"] - v["maliyet"]) * v["lot"]
-        t_maliyet_kapali += (v["maliyet"] * v["lot"])
-        t_satis_kapali += (v["satis"] * v["lot"])
-        satirlar_kapali.append({
-            "Tarih": v.get("tarih", "-"), "Hisse": v["hisse"].replace(".IS", ""),
-            "Maliyet": v["maliyet"], "Satış": v["satis"], "Lot": v["lot"],
-            "K/Z (%)": round(y, 2), "Net K/Z": round(n, 2)
-        })
-    t_net_kapali = t_satis_kapali - t_maliyet_kapali
-    t_yuzde_kapali = (t_net_kapali / t_maliyet_kapali) * 100 if t_maliyet_kapali > 0 else 0
+    # --- GEÇMİŞ TABLO VE TOPLAM ---
+    if kapatilan_portfoy:
+        st.markdown('<br><h3 style="color: #00a2ff !important;">[ GEÇMİŞ_İŞLEMLER ]</h3>', unsafe_allow_html=True)
+        df_kapali = pd.DataFrame(satirlar_kapali)
+        toplam_row_kapali = pd.DataFrame([{"Alım Tarihi": "-", "Satış Tarihi": "-", "Hisse": "TOPLAM", "Maliyet": 0, "Satış": 0, "Lot": 0, "K/Z (%)": t_yuzde_kapali, "Net K/Z": t_net_kapali}])
+        df_kapali_final = pd.concat([df_kapali, toplam_row_kapali], ignore_index=True)
+
+        st.dataframe(
+            df_kapali_final.style.format({
+                "Maliyet": "{:.2f} TL", "Satış": "{:.2f} TL", "K/Z (%)": "% {:.2f}", "Net K/Z": "{:.2f} TL"
+            }).map(lambda x: 'color: #00a2ff; font-weight: bold' if isinstance(x, (int, float)) and x > 0 else ('color: #FF003C; font-weight: bold' if isinstance(x, (int, float)) and x < 0 else ''), 
+                   subset=['K/Z (%)', 'Net K/Z'])
+              .map(lambda x: 'background-color: #1a1a1a; font-weight: bold; color: #ffffff' if x == "TOPLAM" else '', subset=['Hisse']),
+            width='stretch', hide_index=True
+        )
 
     # --- ÖZET METRİKLER ---
     c1, c2, c3, c4, c5 = st.columns(5)
@@ -217,6 +220,8 @@ def ana_uygulama():
 
 if __name__ == "__main__":
     ana_uygulama()
+
+
 
 
 
