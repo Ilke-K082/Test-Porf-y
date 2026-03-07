@@ -29,35 +29,33 @@ def para_formatla(deger):
 
 # --- PORTFÖY VERİLERİ ---
 portfoy = [
-    # 18.02.2026 İşlemleri
-    {"hisse": "AGROT.IS", "maliyet": 3.29, "lot": 3052, "tarih": "18.02.2026"},
-    {"hisse": "EBEBK.IS", "maliyet": 63.63, "lot": 119, "tarih": "18.02.2026"},
-    {"hisse": "RAYSG.IS", "maliyet": 230.14, "lot": 34, "tarih": "18.02.2026"},
-    {"hisse": "SRVGY.IS", "maliyet": 3.54, "lot": 2843, "tarih": "18.02.2026"},
-
-    # 19.02.2026 İşlemleri
-    {"hisse": "AKYHO.IS", "maliyet": 2.90, "lot": 3516, "tarih": "19.02.2026"},
-    {"hisse": "ARENA.IS", "maliyet": 28.20, "lot": 357, "tarih": "19.02.2026"},
-    {"hisse": "BEGYO.IS", "maliyet": 4.86, "lot": 2062, "tarih": "19.02.2026"},
-    {"hisse": "DGNMO.IS", "maliyet": 5.13, "lot": 1943, "tarih": "19.02.2026"},
-
     # 20.02.2026 İşlemleri
-    {"hisse": "BUCIM.IS", "maliyet": 6.91, "lot": 1449, "tarih": "20.02.2026"},
-    {"hisse": "KARTN.IS", "maliyet": 82.12, "lot": 123, "tarih": "20.02.2026"},
     {"hisse": "LILAK.IS", "maliyet": 33.35, "lot": 302, "tarih": "20.02.2026"},
-    {"hisse": "AVTUR.IS", "maliyet": 18.61, "lot": 404, "tarih": "20.02.2026"},
-    {"hisse": "MAKIM.IS", "maliyet": 16.63, "lot": 602, "tarih": "20.02.2026"},
-    
+
+    # 22.02.2026 İşlemleri
+    {"hisse": "DGNMO.IS", "maliyet": 4.91, "lot": 2792, "tarih": "22.02.2026"},
+    {"hisse": "BEGYO.IS", "maliyet": 4.62, "lot": 2979, "tarih": "22.02.2026"},
+    {"hisse": "MAKIM.IS", "maliyet": 15.96, "lot": 862, "tarih": "22.02.2026"},
+    {"hisse": "ARENA.IS", "maliyet": 27.10, "lot": 509, "tarih": "22.02.2026"},
+
     # 23.02.2026 İşlemleri
-    {"hisse": "EFOR.IS", "maliyet": 22.95, "lot": 437, "tarih": "23.02.2026"},
+    {"hisse": "SRVGY.IS", "maliyet": 3.29, "lot": 5319, "tarih": "23.02.2026"},
+    {"hisse": "BUCIM.IS", "maliyet": 6.65, "lot": 2069, "tarih": "23.02.2026"},
+    {"hisse": "KARTN.IS", "maliyet": 79.31, "lot": 175, "tarih": "23.02.2026"},
 
     # 24.02.2026 İşlemleri
-    {"hisse": "DCTTR.IS", "maliyet": 8.50, "lot": 1192, "tarih": "24.02.2026"},
-    {"hisse": "AKFGY.IS", "maliyet": 3.12, "lot": 1603, "tarih": "24.02.2026"},
+    {"hisse": "AGROT.IS", "maliyet": 3.05, "lot": 5742, "tarih": "24.02.2026"},
+    {"hisse": "RAYSG.IS", "maliyet": 216.43, "lot": 66, "tarih": "24.02.2026"},
+    {"hisse": "AKYHO.IS", "maliyet": 2.80, "lot": 4908, "tarih": "24.02.2026"},
+    {"hisse": "DCTTR.IS", "maliyet": 8.50, "lot": 1182, "tarih": "24.02.2026"},
 
-    # 25.02.2026 İşlemleri
-    {"hisse": "KRDMA.IS", "maliyet": 30.62, "lot": 165, "tarih": "25.02.2026"},
-    {"hisse": "IZENR.IS", "maliyet": 9.98, "lot": 1018, "tarih": "25.02.2026"}
+    # 26.02.2026 İşlemleri
+    {"hisse": "EFOR.IS", "maliyet": 21.34, "lot": 822, "tarih": "26.02.2026"},
+    {"hisse": "IZENR.IS", "maliyet": 9.64, "lot": 1444, "tarih": "26.02.2026"},
+    {"hisse": "AKFGY.IS", "maliyet": 2.99, "lot": 3341, "tarih": "26.02.2026"},
+
+    # 27.02.2026 İşlemleri
+    {"hisse": "KRDMA.IS", "maliyet": 29.49, "lot": 343, "tarih": "27.02.2026"}
 ]
 
 kapatilan_portfoy = [
@@ -68,7 +66,11 @@ kapatilan_portfoy = [
     {"hisse": "ERSU.IS", "alim_tarihi": "24.02.2026", "maliyet": 19.38, "satis": 21.30, "lot": 258, "tarih": "25.02.2026"},
     {"hisse": "TEHOL.IS", "alim_tarihi": "24.02.2026", "maliyet": 15.89, "satis": 16.05, "lot": 323, "tarih": "25.02.2026"},
     {"hisse": "SANFM.IS", "alim_tarihi": "18.02.2026", "maliyet": 7.47, "satis": 8.02, "lot": 1005, "tarih": "27.02.2026"},
-    {"hisse": "KLMSN.IS", "alim_tarihi": "18.02.2026", "maliyet": 32.35, "satis": 35.62, "lot": 234, "tarih": "27.02.2026"}
+    {"hisse": "KLMSN.IS", "alim_tarihi": "18.02.2026", "maliyet": 32.35, "satis": 35.62, "lot": 234, "tarih": "27.02.2026"},
+    
+    # Yeni Kapatılan İşlemler
+    {"hisse": "AVTUR.IS", "alim_tarihi": "20.02.2026", "maliyet": 18.61, "satis": 21.98, "lot": 404, "tarih": "04.03.2026"},
+    {"hisse": "EBEBK.IS", "alim_tarihi": "18.02.2026", "maliyet": 63.63, "satis": 64.00, "lot": 119, "tarih": "05.03.2026"}
 ]
 
 @st.cache_data(ttl=300)
@@ -222,5 +224,6 @@ def ana_uygulama():
 
 if __name__ == "__main__":
     ana_uygulama()
+
 
 
